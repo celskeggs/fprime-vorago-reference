@@ -1,0 +1,17 @@
+# fprime items
+logs/
+cmake-build-*
+build-artifacts/
+build-fprime-*/
+*-template
+*.template.cpp
+*.template.hpp
+# Misc
+/venv/
+/fprime-venv/
+.DS_Store
+*.gcov
+/.vscode/settings.json
+/.vscode/bookmarks.json
+.cache/
+__pycache__

@@ -1,0 +1,89 @@
+# Copyright 2026 California Institute of Technology
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Checks out, generates, and builds fprime-vorago-reference across all
+# supported toolchain variants, using the Vorago toolchain container as the
+# job's `container:`. The linux-gcc-ut leg builds and runs the unit test suite (fprime-util check);
+# the others are build-only - no GDS.
+name: Build F´
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: jpl-linux-x64
+    container:
+      image: ghcr.io/fprime-community/llvm-vorago-arm-toolchain:lvat-23.1.0.0
+      # Explicit github.com credentials are required when building on GHE.
+      credentials:
+        username: ${{ vars.GH_COM_USERNAME }}
+        password: ${{ secrets.GH_COM_PAT }}
+    env:
+      # Some build tooling (e.g. generate_build_info.py) expects a USER
+      # environment variable to be set; container jobs don't set one by
+      # default. Now it matches the same workaround the manual docker exec flow uses.
+      USER: docker
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - toolchain: va416x0-baremetal
+            generate_args: va416x0-baremetal -f
+            build_cmd: build va416x0-baremetal
+          - toolchain: va416x0-baremetal-nostrb
+            generate_args: va416x0-baremetal-nostrb -f
+            build_cmd: build va416x0-baremetal-nostrb
+          - toolchain: va416x0-baremetal-profiler
+            generate_args: va416x0-baremetal-profiler -f
+            build_cmd: build va416x0-baremetal-profiler
+          - toolchain: linux-gcc-ut
+            generate_args: --ut -f
+            build_cmd: check
+
+    name: Build (${{ matrix.toolchain }})
+
+    steps:
+      - name: Checkout fprime-vorago-reference
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Mark workspace as a safe git directory
+        # Needed even under the job-level `container:` key: whatever user
+        # context checkout ran under doesn't match the one build steps (e.g.
+        # generate_build_info.py's `git branch --show-current` call) run
+        # under on this runner's containerized-pod implementation, so git
+        # flags the checkout as "dubious ownership" without this.
+        run: git config --global --add safe.directory "*"
+
+      - name: Create fprime-venv and install fprime-util/GDS
+        # The toolchain image does not ship a pre-built fprime-venv,
+        # so build one here.
+        run: |
+          python3 -m venv fprime-venv
+          . ./fprime-venv/bin/activate
+          pip install --upgrade pip
+          pip install -r lib/fprime/requirements.txt
+          pip install -r requirements.txt
+
+      - name: Generate and build
+        run: |
+          . ./fprime-venv/bin/activate
+          fprime-util generate ${{ matrix.generate_args }}
+          fprime-util ${{ matrix.build_cmd }}

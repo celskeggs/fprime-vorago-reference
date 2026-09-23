@@ -1,0 +1,4 @@
+# Dependencies of cmake/scripts/build_extmem_dictionaries.py, needed by
+# cmake/external_memory.cmake but not provided by lib/fprime/requirements.txt.
+pyelftools==0.32
+cpp-demangle

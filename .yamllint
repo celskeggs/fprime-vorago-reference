@@ -1,0 +1,22 @@
+---
+extends: default
+
+rules:
+  # GitHub Actions workflows routinely embed long run: commands, URLs, and
+  # PR comment bodies; wrapping these for an 80-column limit hurts readability.
+  line-length: disable
+
+  # None of our YAML files use the '---' document start marker, and there's no
+  # need to start doing so now.
+  document-start: disable
+
+  # GitHub Actions workflow files use 'on:' as a trigger key, which YAML 1.1
+  # would otherwise interpret as boolean true.
+  truthy:
+    check-keys: false
+
+  # Some existing files use a space after '[' and before ']' and others don't.
+  # allow both styles.
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1

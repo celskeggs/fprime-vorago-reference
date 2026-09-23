@@ -1,0 +1,39 @@
+{
+    "version": 4,
+    "configurePresets": [
+      {
+        "name": "fprime-ninja",
+        "displayName": "F´ Release (Ninja) Preset",
+        "description": "F´ release build using ninja and local fprime-venv",
+        "generator": "Ninja",
+        "binaryDir": "build-fprime-automatic-va416x0-baremetal",
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/lib/fprime-vorago/cmake/toolchain/va416x0-baremetal.cmake",
+          "CMAKE_BUILD_TYPE": "Release"
+        }
+      },
+      {
+        "name": "fprime-ninja-nostrb",
+        "displayName": "F´ Release (Ninja) Preset (nostrb)",
+        "description": "F´ release build using ninja and local fprime-venv with nostrb optimizations",
+        "generator": "Ninja",
+        "binaryDir": "build-fprime-automatic-va416x0-baremetal-nostrb",
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/lib/fprime-vorago/cmake/toolchain/va416x0-baremetal-nostrb.cmake",
+          "CMAKE_BUILD_TYPE": "Release"
+        }
+      },
+      {
+        "name": "fprime-ut-ninja",
+        "displayName": "F´ Unit Test (Ninja) Preset",
+        "description": "F´ debug build including unit tests using ninja and local fprime-venv",
+        "binaryDir": "build-fprime-automatic-linux-gcc-ut",
+        "generator": "Ninja",
+        "cacheVariables": {
+          "BUILD_TESTING": "ON",
+          "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchain/linux-gcc.cmake",
+          "CMAKE_BUILD_TYPE": "Release"
+        }
+      }
+    ]
+}

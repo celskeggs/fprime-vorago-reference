@@ -1,0 +1,34 @@
+{
+	"name": "fprime-vorago-reference Development Container",
+	"image": "ghcr.io/fprime-community/llvm-vorago-arm-toolchain:lvat-23.1.0.0",
+	"remoteEnv": {
+		"PATH": "${containerWorkspaceFolder}/fprime-venv/bin:${containerEnv:PATH}"
+	},
+	"runArgs": [
+		"--device=/dev/fuse",
+		"--privileged"
+	],
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"extensions.autoCheckUpdates": true,
+				"python.analysis.typeCheckingMode": "standard",
+				"fpp.serverPath": "/usr/local/bin/fpp_lsp_server"
+			},
+			"extensions": [
+				"marus25.cortex-debug",
+				"ms-vscode.cpptools-themes",
+				"ms-vscode.cpptools",
+				"ms-vscode.cpptools-extension-pack",
+				"twxs.cmake",
+				"ms-vscode.cmake-tools",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.debugpy",
+				"GitHub.vscode-pull-request-github",
+				"jet-propulsion-laboratory.fpp",
+				"ms-azuretools.vscode-docker"
+			]
+		}
+	}
+}
