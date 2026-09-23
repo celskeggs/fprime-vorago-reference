@@ -27,13 +27,7 @@ on:
 
 jobs:
   build:
-    runs-on: jpl-linux-x64
-    container:
-      image: ghcr.io/fprime-community/llvm-vorago-arm-toolchain:lvat-23.1.0.0
-      # Explicit github.com credentials are required when building on GHE.
-      credentials:
-        username: ${{ vars.GH_COM_USERNAME }}
-        password: ${{ secrets.GH_COM_PAT }}
+    runs-on: ubuntu-22.04
     env:
       # Some build tooling (e.g. generate_build_info.py) expects a USER
       # environment variable to be set; container jobs don't set one by
