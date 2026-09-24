@@ -79,7 +79,7 @@ list(APPEND FPRIME_BUILD_LOCATIONS "${FPRIME_FRAMEWORK_PATH}")
 
 # Exclude components which assert that FwPacketDescriptor conforms to the Space Packet Protocol.
 # This project does not conform to SPP and does not make use of these components.
-set_target_properties(Svc_Ccsds_ApidManager Svc_FprimeDeframer Svc_Ccsds_TmFramer Svc_Ccsds_AosFramer Svc_Ccsds_AosDeframer PROPERTIES
+set_target_properties(Svc_Ccsds_ApidManager Svc_FprimeDeframer Svc_Ccsds_TmFramer Svc_Ccsds_AosFramer Svc_Ccsds_AosDeframer Svc_Ccsds_Utils Svc_ComAggregator PROPERTIES
     EXCLUDE_FROM_ALL TRUE
 )
 
