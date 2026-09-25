@@ -13,8 +13,8 @@
 // limitations under the License.
 
 // ======================================================================
-// \title config/OsDelegateRawTime.hpp
-// \brief Vorago compile-time selection of Os::RawTime implementation
+// \title config/OsSelection.hpp
+// \brief Vorago compile-time selection of Os::RawTime; Mutex/ConditionVariable keep the link-time delegates
 //
 // This header uses compile-time selection by aliasing Os::RawTime directly
 // to Va416x0Os::TimerRawTime, bypassing the link-time DelegateRawTime
@@ -26,8 +26,8 @@
 // - Better optimization opportunities
 
 // ======================================================================
-#ifndef CONFIG_OS_DELEGATERAWTIME_HPP
-#define CONFIG_OS_DELEGATERAWTIME_HPP
+#ifndef CONFIG_OSSELECTION_HPP
+#define CONFIG_OSSELECTION_HPP
 
 //!< Forward declaration of the concrete TimerRawTime implementation
 namespace Va416x0Os {
@@ -37,8 +37,18 @@ namespace Os {
 
 using RawTime = Va416x0Os::TimerSingleRawTime;  //!< Compile-time alias to TimerRawTime (not DelegateRawTime)
 
+//!< The override file replaces the whole default, so every selection must be
+//!< present: keep Mutex and ConditionVariable on the link-time delegates
+class DelegateMutex;
+using Mutex = DelegateMutex;
+
+class DelegateConditionVariable;
+using ConditionVariable = DelegateConditionVariable;
+
 }  // namespace Os
 
 #define OS_RAW_TIME_HEADER "Va416x0/Os/TimerSingleRawTime/TimerSingleRawTime.hpp"
+#define OS_MUTEX_HEADER <Os/DelegateMutex.hpp>
+#define OS_CONDITION_VARIABLE_HEADER <Os/DelegateConditionVariable.hpp>
 
-#endif  // CONFIG_OS_DELEGATERAWTIME_HPP
+#endif  // CONFIG_OSSELECTION_HPP

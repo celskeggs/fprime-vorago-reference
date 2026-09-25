@@ -25,10 +25,10 @@ if ((BUILD_TESTING) OR (FPRIME_PLATFORM STREQUAL "Linux"))
 endif ()
 
 if ((BUILD_TESTING) OR (FPRIME_PLATFORM STREQUAL "Linux"))
-    set(OS_RAWTIME_CFG "${CMAKE_CURRENT_LIST_DIR}/linux-gcc/OsDelegateRawTime.hpp")
+    set(OS_RAWTIME_CFG "${CMAKE_CURRENT_LIST_DIR}/linux-gcc/OsSelection.hpp")
     set(USE_VORAGO_RAWTIME FALSE)
 else()
-    set(OS_RAWTIME_CFG "${CMAKE_CURRENT_LIST_DIR}/vorago/OsDelegateRawTime.hpp")
+    set(OS_RAWTIME_CFG "${CMAKE_CURRENT_LIST_DIR}/vorago/OsSelection.hpp")
     set(USE_VORAGO_RAWTIME TRUE)
 endif ()
 
@@ -53,7 +53,7 @@ register_fprime_config(
 )
 
 if (USE_VORAGO_RAWTIME)
-    # vorago/OsDelegateRawTime.hpp (selected above) compile-time aliases Os::RawTime to
+    # vorago/OsSelection.hpp (selected above) compile-time aliases Os::RawTime to
     # Va416x0Os::TimerSingleRawTime, so any source that includes Os/RawTime.hpp transitively pulls in
     # TimerSingleRawTime.hpp and the autocoded headers of its dependencies (e.g. Va416x0_Mmio_Timer/
     # ClkTree/Types). Include *resolution* is never the problem (fprime puts the whole tree on -I);

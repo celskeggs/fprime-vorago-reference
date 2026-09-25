@@ -13,19 +13,27 @@
 // limitations under the License.
 
 // ======================================================================
-// \title config/OsDelegateRawTime.hpp
-// \brief Linux/test override: alias Os::RawTime to the link-time delegate
+// \title config/OsSelection.hpp
+// \brief Linux/test override: keep the link-time delegate selections
 // ======================================================================
-#ifndef CONFIG_OS_DELEGATERAWTIME_HPP
-#define CONFIG_OS_DELEGATERAWTIME_HPP
+#ifndef CONFIG_OSSELECTION_HPP
+#define CONFIG_OSSELECTION_HPP
 
 namespace Os {
 
 class DelegateRawTime;
 using RawTime = DelegateRawTime;
 
+class DelegateMutex;
+using Mutex = DelegateMutex;
+
+class DelegateConditionVariable;
+using ConditionVariable = DelegateConditionVariable;
+
 }  // namespace Os
 
 #define OS_RAW_TIME_HEADER <Os/DelegateRawTime.hpp>
+#define OS_MUTEX_HEADER <Os/DelegateMutex.hpp>
+#define OS_CONDITION_VARIABLE_HEADER <Os/DelegateConditionVariable.hpp>
 
-#endif  // CONFIG_OS_DELEGATERAWTIME_HPP
+#endif  // CONFIG_OSSELECTION_HPP
